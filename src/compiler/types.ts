@@ -4959,6 +4959,9 @@ namespace ts {
         /* @internal */ hasInvalidatedResolution?: HasInvalidatedResolution;
         /* @internal */ hasChangedAutomaticTypeDirectiveNames?: boolean;
         createHash?(data: string): string;
+
+        // TODO: later handle this in better way in builder host instead once the ap
+        /*@internal*/createDirectory?(directory: string): void;
     }
 
     /* @internal */
