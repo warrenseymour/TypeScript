@@ -3396,6 +3396,9 @@ namespace ts {
         if (operatorTokenKind === SyntaxKind.QuestionQuestionToken) {
             transformFlags |= TransformFlags.AssertESNext;
         }
+        else if (operatorTokenKind === SyntaxKind.BarGreaterThanToken) {
+            transformFlags |= TransformFlags.AssertESNext;
+        }
         else if (operatorTokenKind === SyntaxKind.EqualsToken && leftKind === SyntaxKind.ObjectLiteralExpression) {
             // Destructuring object assignments with are ES2015 syntax
             // and possibly ES2018 if they contain rest
