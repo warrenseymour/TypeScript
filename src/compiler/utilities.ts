@@ -1569,6 +1569,8 @@ namespace ts {
             case SyntaxKind.JsxOpeningElement:
             case SyntaxKind.JsxSelfClosingElement:
                 return node.tagName;
+            case SyntaxKind.BinaryExpression:
+                return node.right;
             default:
                 return node.expression;
         }
@@ -3153,6 +3155,8 @@ namespace ts {
 
     export function getBinaryOperatorPrecedence(kind: SyntaxKind): number {
         switch (kind) {
+            case SyntaxKind.BarGreaterThanToken:
+                return 3;
             case SyntaxKind.QuestionQuestionToken:
                 return 4;
             case SyntaxKind.BarBarToken:
