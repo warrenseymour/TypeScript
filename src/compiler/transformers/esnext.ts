@@ -33,9 +33,14 @@ namespace ts {
                     if ((<BinaryExpression>node).operatorToken.kind === SyntaxKind.QuestionQuestionToken) {
                         return transformNullishCoalescingExpression(<BinaryExpression>node);
                     }
+                    if ((<BinaryExpression>node).operatorToken.kind === SyntaxKind.BarGreaterThanToken) {
+                        return transformPipelineExpression(<PipelineExpression>node);
+                    }
                     return visitEachChild(node, visitor, context);
                 case SyntaxKind.DeleteExpression:
                     return visitDeleteExpression(node as DeleteExpression);
+                case SyntaxKind.BarGreaterThanToken:
+                    return transformPipelineExpression(<PipelineExpression>node);
                 default:
                     return visitEachChild(node, visitor, context);
             }
@@ -202,6 +207,31 @@ namespace ts {
             return isOptionalChain(skipParentheses(node.expression))
                 ? setOriginalNode(visitNonOptionalExpression(node.expression, /*captureThisArg*/ false, /*isDelete*/ true), node)
                 : updateDelete(node, visitNode(node.expression, visitor, isExpression));
+        }
+
+        function transformPipelineExpressionWorker(node: PipelineExpression, pipelineVariable: Identifier, expressions: Expression[], top: boolean) {
+            if (isPipelineExpression(node.left)) {
+                transformPipelineExpressionWorker(node.left, pipelineVariable, expressions, false);
+            }
+            else {
+                expressions.push(createAssignment(pipelineVariable, visitNode(node.left, visitor, isExpression)));
+            }
+
+            const right = visitNode(node.right, visitor, isExpression);
+            const call = createCall(right, /*typeArguments*/ undefined, [pipelineVariable]);
+            setSourceMapRange(call, node);
+            setCommentRange(call, node);
+            expressions.push(top ? call : createAssignment(pipelineVariable, call));
+        }
+
+        function transformPipelineExpression(node: PipelineExpression) {
+            const pipelineVariable = createTempVariable(hoistVariableDeclaration);
+            const expressions: Expression[] = [];
+            transformPipelineExpressionWorker(node, pipelineVariable, expressions, /*top*/ true);
+            const transformed = inlineExpressions(expressions);
+            setSourceMapRange(transformed, node);
+            setCommentRange(transformed, node);
+            return transformed;
         }
     }
 }
