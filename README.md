@@ -1,3 +1,55 @@
+# wms' TypeScript Fork
+
+## What's this all about then?
+
+This fork contains supports for highly desirable features that will not land in the mainline edition of TypeScript until they progress through the TC39 approval process. This fork currently supports the following language features:
+
+### Pipeline Operator
+
+TC39 Proposal: https://github.com/tc39/proposal-pipeline-operator
+
+Original credit: https://github.com/rbuckton
+
+Based on the `pipelineStage1` branch by `rbuckton`, I've updated this logic (to the best of my ability) to target the latest version of TypeScript.
+
+Some examples/caveats:
+
+```typescript
+const double = (n: number) => n * 2;
+const inc = (n: number) => n + 1;
+
+const twentyTwo = 10
+  |> inc
+  |> double;
+// twentyTwo: number
+```
+
+Arrow functions within a pipeline have to be explicitly wrapped in parentheses:
+
+```typescript
+const twentyTwoBang = 10
+  |> (x => x + 1)        // x: number
+  |> (x => x * 2)        // x: number
+  |> (x => x.toString()) // x: number
+  |> (x => x + '!')      // x: string
+
+// twentyTwoBang: string
+```
+
+Curried functions within a pipeline don't get their arguments inferred (yet!):
+
+```typescript
+declare function map<T, U>(arr: T[], fn: (item: T) => U): U[];
+
+const numbers = [4, 8, 15, 16, 23, 42]
+  |> map(x => x + 1) // x: unknown
+
+// numbers: any[]
+```
+
+---
+
+The rest of this document is the unmodified, official TypeScript readme.
 
 # TypeScript
 
