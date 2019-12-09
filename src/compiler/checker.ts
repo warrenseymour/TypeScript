@@ -24005,7 +24005,7 @@ namespace ts {
             if (isJsxOpeningLikeElement(node)) {
                 return node.attributes.properties.length > 0 || (isJsxOpeningElement(node) && node.parent.children.length > 0) ? [node.attributes] : emptyArray;
             }
-            const args = (isPipelineExpression(node) ? [node.left] : node.arguments) || emptyArray;
+            const args = node.arguments || emptyArray;
             const length = args.length;
             if (length && isSpreadArgument(args[length - 1]) && getSpreadArgumentIndex(args) === length - 1) {
                 // We have a spread argument in the last position and no other spread arguments. If the type
