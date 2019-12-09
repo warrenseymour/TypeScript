@@ -1,0 +1,48 @@
+=== tests/cases/conformance/expressions/pipelineOperator/pipelineOperator.ts ===
+declare const xs: number[];
+>xs : number[]
+
+declare function map<T, U>(arr: T[], fn: (item: T) => U): U[];
+>map : <T, U>(arr: T[], fn: (item: T) => U) => U[]
+>arr : T[]
+>fn : (item: T) => U
+>item : T
+
+declare function filter<T>(arr: T[], fn: (item: T) => boolean): T[];
+>filter : <T>(arr: T[], fn: (item: T) => boolean) => T[]
+>arr : T[]
+>fn : (item: T) => boolean
+>item : T
+
+const x = xs
+>x : number[]
+>xs  |> (_ => map(_, x => x + 1))  |> (_ => filter(_, x => x > 2)) : number[]
+>xs  |> (_ => map(_, x => x + 1)) : number[]
+>xs : number[]
+
+  |> (_ => map(_, x => x + 1))
+>(_ => map(_, x => x + 1)) : (_: number[]) => number[]
+>_ => map(_, x => x + 1) : (_: number[]) => number[]
+>_ : number[]
+>map(_, x => x + 1) : number[]
+>map : <T, U>(arr: T[], fn: (item: T) => U) => U[]
+>_ : number[]
+>x => x + 1 : (x: number) => number
+>x : number
+>x + 1 : number
+>x : number
+>1 : 1
+
+  |> (_ => filter(_, x => x > 2));
+>(_ => filter(_, x => x > 2)) : (_: number[]) => number[]
+>_ => filter(_, x => x > 2) : (_: number[]) => number[]
+>_ : number[]
+>filter(_, x => x > 2) : number[]
+>filter : <T>(arr: T[], fn: (item: T) => boolean) => T[]
+>_ : number[]
+>x => x > 2 : (x: number) => boolean
+>x : number
+>x > 2 : boolean
+>x : number
+>2 : 2
+

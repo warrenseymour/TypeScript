@@ -1,0 +1,40 @@
+=== tests/cases/conformance/expressions/pipelineOperator/pipelineOperator2.ts ===
+declare const xs: number[];
+>xs : number[]
+
+declare function map<T, U>(fn: (item: T) => U): (arr: T[]) => U[];
+>map : <T, U>(fn: (item: T) => U) => (arr: T[]) => U[]
+>fn : (item: T) => U
+>item : T
+>arr : T[]
+
+declare function filter<T>(fn: (item: T) => boolean): (arr: T[]) => T[];
+>filter : <T>(fn: (item: T) => boolean) => (arr: T[]) => T[]
+>fn : (item: T) => boolean
+>item : T
+>arr : T[]
+
+const x = xs
+>x : number[]
+>xs    |> map((x: number) => x + 1)    |> filter((x: number) => x > 1) : number[]
+>xs    |> map((x: number) => x + 1) : number[]
+>xs : number[]
+
+    |> map((x: number) => x + 1)
+>map((x: number) => x + 1) : (arr: number[]) => number[]
+>map : <T, U>(fn: (item: T) => U) => (arr: T[]) => U[]
+>(x: number) => x + 1 : (x: number) => number
+>x : number
+>x + 1 : number
+>x : number
+>1 : 1
+
+    |> filter((x: number) => x > 1)
+>filter((x: number) => x > 1) : (arr: number[]) => number[]
+>filter : <T>(fn: (item: T) => boolean) => (arr: T[]) => T[]
+>(x: number) => x > 1 : (x: number) => boolean
+>x : number
+>x > 1 : boolean
+>x : number
+>1 : 1
+

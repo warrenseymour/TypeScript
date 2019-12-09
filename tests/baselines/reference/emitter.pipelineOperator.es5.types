@@ -1,0 +1,36 @@
+=== tests/cases/conformance/emitter/es5/pipelineOperator/emitter.pipelineOperator.es5.ts ===
+declare const xs: number[];
+>xs : number[]
+
+declare function map<T, U>(arr: T[], fn: (item: T) => U): U[];
+>map : <T, U>(arr: T[], fn: (item: T) => U) => U[]
+>arr : T[]
+>fn : (item: T) => U
+>item : T
+
+declare function identity<T>(value: T): T;
+>identity : <T>(value: T) => T
+>value : T
+
+const x = xs |> (_ => map(_, x => x + 1));
+>x : number[]
+>xs |> (_ => map(_, x => x + 1)) : number[]
+>xs : number[]
+>(_ => map(_, x => x + 1)) : (_: number[]) => number[]
+>_ => map(_, x => x + 1) : (_: number[]) => number[]
+>_ : number[]
+>map(_, x => x + 1) : number[]
+>map : <T, U>(arr: T[], fn: (item: T) => U) => U[]
+>_ : number[]
+>x => x + 1 : (x: number) => number
+>x : number
+>x + 1 : number
+>x : number
+>1 : 1
+
+const y = xs |> identity;
+>y : number[]
+>xs |> identity : number[]
+>xs : number[]
+>identity : <T>(value: T) => T
+
