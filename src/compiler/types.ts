@@ -181,6 +181,7 @@ namespace ts {
         TildeToken,
         AmpersandAmpersandToken,
         BarBarToken,
+        BarGreaterThanToken,
         QuestionToken,
         ColonToken,
         AtToken,
@@ -1551,6 +1552,11 @@ namespace ts {
         | LogicalOperator
         ;
 
+    export type PipelineOperatorOrHigher
+        = LogicalOperatorOrHigher
+        | SyntaxKind.BarGreaterThanToken
+        ;
+
     // see: https://tc39.github.io/ecma262/#prod-AssignmentOperator
     export type CompoundAssignmentOperator
         = SyntaxKind.PlusEqualsToken
@@ -1577,6 +1583,7 @@ namespace ts {
     export type AssignmentOperatorOrHigher
         = SyntaxKind.QuestionQuestionToken
         | LogicalOperatorOrHigher
+        | PipelineOperatorOrHigher
         | AssignmentOperator
         ;
 
@@ -1593,6 +1600,10 @@ namespace ts {
         left: Expression;
         operatorToken: BinaryOperatorToken;
         right: Expression;
+    }
+
+    export interface PipelineExpression extends BinaryExpression {
+        operatorToken: Token<SyntaxKind.BarGreaterThanToken>;
     }
 
     export type AssignmentOperatorToken = Token<AssignmentOperator>;
@@ -1957,7 +1968,7 @@ namespace ts {
         /*@internal*/ questionDotToken?: QuestionDotToken; // NOTE: Invalid syntax, only used to report a grammar error.
     }
 
-    export type CallLikeExpression = CallExpression | NewExpression | TaggedTemplateExpression | Decorator | JsxOpeningLikeElement;
+    export type CallLikeExpression = CallExpression | NewExpression | TaggedTemplateExpression | Decorator | PipelineExpression | JsxOpeningLikeElement;
 
     export interface AsExpression extends Expression {
         kind: SyntaxKind.AsExpression;
