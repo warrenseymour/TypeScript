@@ -184,6 +184,7 @@ namespace ts {
         "~": SyntaxKind.TildeToken,
         "&&": SyntaxKind.AmpersandAmpersandToken,
         "||": SyntaxKind.BarBarToken,
+        "|>": SyntaxKind.BarGreaterThanToken,
         "?": SyntaxKind.QuestionToken,
         "??": SyntaxKind.QuestionQuestionToken,
         "?.": SyntaxKind.QuestionDotToken,
@@ -1873,6 +1874,9 @@ namespace ts {
                         }
                         if (text.charCodeAt(pos + 1) === CharacterCodes.equals) {
                             return pos += 2, token = SyntaxKind.BarEqualsToken;
+                        }
+                        if (text.charCodeAt(pos + 1) === CharacterCodes.greaterThan) {
+                            return pos += 2, token = SyntaxKind.BarGreaterThanToken;
                         }
                         pos++;
                         return token = SyntaxKind.BarToken;
