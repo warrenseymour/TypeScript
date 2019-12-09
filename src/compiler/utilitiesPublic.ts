@@ -1154,6 +1154,11 @@ namespace ts {
         return node.kind === SyntaxKind.BinaryExpression;
     }
 
+    export function isPipelineExpression(node: Node): node is PipelineExpression {
+        return isBinaryExpression(node)
+            && node.operatorToken.kind === SyntaxKind.BarGreaterThanToken;
+    }
+
     export function isConditionalExpression(node: Node): node is ConditionalExpression {
         return node.kind === SyntaxKind.ConditionalExpression;
     }
