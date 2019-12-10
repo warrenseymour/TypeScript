@@ -1,0 +1,41 @@
+=== tests/cases/conformance/expressions/pipelineOperator/pipelineOperator3.ts ===
+declare const xs: number[];
+>xs : number[]
+
+declare function map<T, U>(fn: (item: T) => U): (arr: T[]) => U[];
+>map : <T, U>(fn: (item: T) => U) => (arr: T[]) => U[]
+>fn : (item: T) => U
+>item : T
+>arr : T[]
+
+declare function filter<T>(fn: (item: T) => boolean): (arr: T[]) => T[];
+>filter : <T>(fn: (item: T) => boolean) => (arr: T[]) => T[]
+>fn : (item: T) => boolean
+>item : T
+>arr : T[]
+
+const result = xs
+>result : string[]
+>xs    |> map(x => x.toString())    |> filter(x => x === '1') : string[]
+>xs    |> map(x => x.toString()) : string[]
+>xs : number[]
+
+    |> map(x => x.toString())
+>map(x => x.toString()) : (arr: number[]) => string[]
+>map : <T, U>(fn: (item: T) => U) => (arr: T[]) => U[]
+>x => x.toString() : (x: number) => string
+>x : number
+>x.toString() : string
+>x.toString : (radix?: number) => string
+>x : number
+>toString : (radix?: number) => string
+
+    |> filter(x => x === '1')
+>filter(x => x === '1') : (arr: string[]) => string[]
+>filter : <T>(fn: (item: T) => boolean) => (arr: T[]) => T[]
+>x => x === '1' : (x: string) => boolean
+>x : string
+>x === '1' : boolean
+>x : string
+>'1' : "1"
+
