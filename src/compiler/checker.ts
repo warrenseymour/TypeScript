@@ -21154,6 +21154,30 @@ namespace ts {
             return argIndex === -1 ? undefined : getContextualTypeForArgumentAtIndex(callTarget, argIndex, contextFlags);
         }
 
+        /**
+         * For a step within a Pipeline expression, sythesize a call signature to be used as a contextual type for the RHS, based on the LHS.
+         * For example, given `a |> someFn(x => ...)`, `someFn` gets a contextual type of `(a) => any`. This allows higher-order-functions on the RHS to correctly infer their arguments.
+         */
+        function getContextualTypeForPipelineStep(expression: PipelineExpression): Type | undefined {
+            const leftType = getTypeOfExpression(expression.left);
+
+            const parameterSymbol = createSymbol(SymbolFlags.FunctionScopedVariable, 'left' as __String);
+            parameterSymbol.type = leftType;
+
+            const signature = createSignature(
+                undefined,
+                undefined,
+                undefined,
+                [parameterSymbol],
+                unknownType,
+                undefined,
+                1,
+                SignatureFlags.None
+            );
+
+            return getOrCreateTypeFromSignature(signature);
+        }
+
         function getContextualTypeForArgumentAtIndex(callTarget: CallLikeExpression, argIndex: number, contextFlags?: ContextFlags): Type {
             // If we're already in the process of resolving the given signature, don't resolve again as
             // that could cause infinite recursion. Instead, return anySignature.
@@ -21203,11 +21227,14 @@ namespace ts {
                 case SyntaxKind.CommaToken:
                     return node === right ? getContextualType(binaryExpression, contextFlags) : undefined;
                 case SyntaxKind.BarGreaterThanToken:
-                    if (node !== left) {
-                        return undefined;
+                    if (node === left) {
+                        return getContextualTypeForArgument(<PipelineExpression>binaryExpression, node);
                     }
 
-                    return getContextualTypeForArgument(<PipelineExpression>binaryExpression, node);
+                    if (node === right) {
+                        return getContextualTypeForPipelineStep(<PipelineExpression>binaryExpression);
+                    }
+
                 default:
                     return undefined;
             }
