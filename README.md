@@ -36,15 +36,17 @@ const twentyTwoBang = 10
 // twentyTwoBang: string
 ```
 
-Curried functions within a pipeline don't get their arguments inferred (yet!):
+I did some monkeying around with the contexual typing that gets applied to the RHS of a pipeline expression, meaning it's possible for Curried functions within a pipeline to get their arguments inferred (!):
 
 ```typescript
-declare function map<T, U>(arr: T[], fn: (item: T) => U): U[];
+declare function map<T, U>(fn: (item: T) => U): (arr: T[]) => U[];
+declare function filter<T>(fn: (item: T) => boolean): (arr: T[]) => T[];
 
 const numbers = [4, 8, 15, 16, 23, 42]
-  |> map(x => x + 1) // x: unknown
+  |> filter(x => x > 10)    // x: number
+  |> map(x => x.toString()) // x: number
 
-// numbers: any[]
+// numbers: string[]
 ```
 
 ---
