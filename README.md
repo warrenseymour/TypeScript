@@ -1,8 +1,28 @@
 # wms' TypeScript Fork
 
+[![Watch the video](https://img.youtube.com/vi/ofy13sWr23I/maxresdefault.jpg)](https://youtu.be/ofy13sWr23I)
+
 ## What's this all about then?
 
 This fork contains supports for highly desirable features that will not land in the mainline edition of TypeScript until they progress through the TC39 approval process. This fork currently supports the following language features:
+
+- [The Pipeline Operator](#pipeline-operator)
+
+## Usage
+
+| Fork Version                      | Based on TypeScript Version | Fork-specific Features/Notes                               |
+|-----------------------------------|-----------------------------|------------------------------------------------------------|
+| `wms/typescript#v3.7.3-wms+1.0.0` | `v3.7.3`                    | Initial release: Introduced Pipeline Operator              |
+
+Making use of this fork within your own project should be relatively straightforward. In most cases, you should be able to just replace the version of the `typescript` dependency in `package.json` with a version specified in the table above.
+
+For example, if you're currently using `"typescript": "3.7.3"`, you can switch to `"typescript": "wms/typescript#v3.7.3-wms+1.0.0"`.
+
+Well-behaved tools *should* use whatever version of TypeScript is installed at `{yourProject}/node_modules/typescript`. If you encounter a specific tool that is not working, please raise an issue so that I can document it.
+
+## Version Summary
+
+## Additional Language Features
 
 ### Pipeline Operator
 
